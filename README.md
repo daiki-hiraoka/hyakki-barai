@@ -5,9 +5,13 @@
 操作するのは移動だけ。武器はひとりでに妖怪を祓い、落とした霊玉を集めてレベルが上がるたびに、御札を 1 枚選んで強くなっていく。
 
 - ドット絵はすべてコードで定義した自作（画像ファイルなし）、音は Web Audio の合成のみ
-- 外部素材はフォント [DotGothic16](https://fonts.google.com/specimen/DotGothic16)（SIL Open Font License 1.1）だけ
+- 外部素材はフォント [DotGothic16](https://fonts.google.com/specimen/DotGothic16)（SIL Open Font License 1.1）だけ。ライセンス文は [public/licenses/DotGothic16-OFL.txt](public/licenses/DotGothic16-OFL.txt) に同梱している
 
 ## 遊び方
+
+公開版はブラウザで開くだけで遊べる：<https://daiki-hiraoka.github.io/hyakki-barai/>
+
+手元で動かす場合：
 
 ```bash
 npm install
@@ -65,6 +69,10 @@ npm run dev
 
 `npm run sim` は `--char <id>`（祓い手）、`--seeds <n>`（試行回数）、`--god`（倒れない）、`--shop`（社を最大）を受けつける。
 `npm run sprites` は `--match <正規表現>`、`--out <パス>`、`--scale <倍率>`、`--glow`（発光部分も表示）を受けつける。
+
+### 公開
+
+`main` に push すると、GitHub Actions（[.github/workflows/deploy.yml](.github/workflows/deploy.yml)）がテストとビルドを行い、`dist/` を GitHub Pages へ公開する。テストか型チェックが落ちたときは公開されない。
 
 ### 構成
 
