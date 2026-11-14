@@ -1,0 +1,58 @@
+import type { CharacterDef, CharacterId } from '../types';
+
+export const CHARACTERS: Record<CharacterId, CharacterDef> = {
+  haruma: {
+    id: 'haruma',
+    name: '晴真',
+    title: '陰陽師',
+    desc: '術の冴えた若き陰陽師。あらゆる術の冷却が短い。',
+    baseHp: 100,
+    weapon: 'reifu',
+    mods: { cooldown: -0.08 },
+  },
+  chihaya: {
+    id: 'chihaya',
+    name: '千早',
+    title: '巫女',
+    desc: '神域に仕える巫女。霊玉を広く引き寄せ、傷がゆっくり癒える。',
+    baseHp: 90,
+    weapon: 'hamaya',
+    mods: { magnet: 0.4, regen: 0.3 },
+  },
+  goukai: {
+    id: 'goukai',
+    name: '剛海',
+    title: '山伏',
+    desc: '山で鍛えた頑健な体。体力と守りに優れるが、足はやや遅い。',
+    baseHp: 140,
+    weapon: 'shakujo',
+    mods: { armor: 1, moveSpeed: -0.05 },
+  },
+  kon: {
+    id: 'kon',
+    name: '紺',
+    title: '狐憑き',
+    desc: '狐に憑かれた少女。術の届く範囲が広く、運が良く、すばしこい。',
+    baseHp: 85,
+    weapon: 'kitsunebi',
+    mods: { area: 0.15, luck: 0.25, moveSpeed: 0.08 },
+  },
+  jubei: {
+    id: 'jubei',
+    name: '十兵衛',
+    title: '浪人',
+    desc: '妖刀を追う流れ者。一撃が重いが、打たれ弱い。',
+    baseHp: 80,
+    weapon: 'katana',
+    mods: { might: 0.25 },
+  },
+  enku: {
+    id: 'enku',
+    name: '円空',
+    title: '僧',
+    desc: '諸国を巡る旅の僧。術が長く続き、功徳を多く積む。',
+    baseHp: 110,
+    weapon: 'juzu',
+    mods: { duration: 0.2, growth: 0.1 },
+  },
+};
