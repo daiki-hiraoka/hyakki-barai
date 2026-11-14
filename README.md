@@ -66,6 +66,7 @@ npm run dev
 | `npm run build` | 型チェックのうえ `dist/` に本番ビルド（静的ファイルとしてどこにでも置ける） |
 | `npm run sim` | ボットに一夜を通しで遊ばせ、分ごとの敵の数・撃破数・レベルなどを表示（バランス調整用） |
 | `npm run sprites` | スプライト一覧を PNG に書き出す（ドット絵の確認用） |
+| `npm run favicon` | 提灯お化けのスプライトから `public/favicon.png` を作り直す |
 
 `npm run sim` は `--char <id>`（祓い手）、`--seeds <n>`（試行回数）、`--god`（倒れない）、`--shop`（社を最大）を受けつける。
 `npm run sprites` は `--match <正規表現>`、`--out <パス>`、`--scale <倍率>`、`--glow`（発光部分も表示）を受けつける。

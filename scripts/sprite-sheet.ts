@@ -8,10 +8,10 @@
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { deflateSync } from 'node:zlib';
 import { hexToRgb } from '../src/art/palette';
 import { frameToRgba, type PixelMode, type SpriteDef } from '../src/art/sprite';
 import { ALL_SPRITES } from '../src/art/sprites/index';
+import { encodePng } from './png';
 
 function arg(name: string): string | undefined {
   const i = process.argv.indexOf(`--${name}`);
@@ -88,53 +88,6 @@ class Image {
   }
 }
 
-// ---- PNG エンコード -------------------------------------------------------
-const CRC_TABLE = (() => {
-  const t = new Uint32Array(256);
-  for (let n = 0; n < 256; n++) {
-    let c = n;
-    for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
-    t[n] = c >>> 0;
-  }
-  return t;
-})();
-
-function crc32(buf: Uint8Array): number {
-  let c = 0xffffffff;
-  for (const b of buf) c = CRC_TABLE[(c ^ b) & 0xff]! ^ (c >>> 8);
-  return (c ^ 0xffffffff) >>> 0;
-}
-
-function chunk(type: string, data: Uint8Array): Buffer {
-  const head = Buffer.alloc(8);
-  head.writeUInt32BE(data.length, 0);
-  head.write(type, 4, 'ascii');
-  const body = Buffer.concat([head.subarray(4), data]);
-  const crc = Buffer.alloc(4);
-  crc.writeUInt32BE(crc32(body), 0);
-  return Buffer.concat([head.subarray(0, 4), body, crc]);
-}
-
-function encodePng(img: Image): Buffer {
-  const stride = img.w * 4 + 1;
-  const raw = Buffer.alloc(stride * img.h);
-  for (let y = 0; y < img.h; y++) {
-    raw[y * stride] = 0;
-    raw.set(img.data.subarray(y * img.w * 4, (y + 1) * img.w * 4), y * stride + 1);
-  }
-  const ihdr = Buffer.alloc(13);
-  ihdr.writeUInt32BE(img.w, 0);
-  ihdr.writeUInt32BE(img.h, 4);
-  ihdr[8] = 8; // ビット深度
-  ihdr[9] = 6; // RGBA
-  return Buffer.concat([
-    Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
-    chunk('IHDR', ihdr),
-    chunk('IDAT', deflateSync(raw)),
-    chunk('IEND', new Uint8Array(0)),
-  ]);
-}
-
 // ---- レイアウト -----------------------------------------------------------
 const GAP = 10;
 const LABEL_SCALE = 2;
@@ -205,6 +158,6 @@ for (const cell of placed) {
 }
 
 mkdirSync(dirname(outPath), { recursive: true });
-writeFileSync(outPath, encodePng(img));
+writeFileSync(outPath, encodePng(img.w, img.h, img.data));
 console.log(`${sprites.length} 個のスプライトを ${sheetW}x${sheetH} で出力しました: ${outPath}`);
 for (const s of sprites) console.log(`  ${s.id}  ${s.w}x${s.h}  ${s.frames.length} フレーム`);

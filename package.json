@@ -12,6 +12,7 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "sprites": "tsx scripts/sprite-sheet.ts",
+    "favicon": "tsx scripts/favicon.ts",
     "sim": "tsx scripts/balance-sim.ts"
   },
   "devDependencies": {
